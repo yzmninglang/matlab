@@ -1,0 +1,16 @@
+x=[0 0.25 0.75 1.25 1.5  1.75 1.875 2 2.125 2.25];
+y=[1.2 1.18 1.1 1 0.92 0.8 0.7 0.55 0.35 0];
+x_m=0:.125:2.25;
+y_lin=interp1(x,y,x_m);
+y_sp=spline(x,y,x_m);
+plot(x,y,'oy');
+hold on;
+plot(x_m,y_lin,'r');
+plot(x_m,y_sp,'g');
+xlim([0 2.5]);
+ylim([0 1.4]);
+ylabel('y(ft)');
+xlabel('x(ft)');
+title('Data & Fit Model');
+legend('Data','Linear','Spline');
+axis square;
