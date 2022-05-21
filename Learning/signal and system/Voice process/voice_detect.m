@@ -6,7 +6,7 @@
 
 
 % 截取一段语音信号，证明浊音语音信号具有周期性，然后在对其基频进行分析
-[y,Fs]=audioread('Z_gril5.wav');
+[y,Fs]=audioread('xin5.wav');
 y=y(:,1);
 
 
