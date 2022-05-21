@@ -41,6 +41,8 @@ if nargout
 else
     gui_mainfcn(gui_State, varargin{:});
 end
+global flag
+flag =0;
 % End initialization code - DO NOT EDIT
 
 
@@ -75,11 +77,18 @@ varargout{1} = handles.output;
 
 % --- Executes on button press in luzhi.
 function luzhi_Callback(hObject, eventdata, handles)
+    global flag
+    flag = ~flag ;
+    if flag==0
+        set(handles.zhuantai,'string','状态：停止');
+    else
+        set(handles.zhuantai,'string','状态：工作');
+    end
     luyingchuli(hObject, eventdata, handles);
 % hObject    handle to luzhi (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-
+    
 
 % --- Executes on button press in jiangzao.
 function jiangzao_Callback(hObject, eventdata, handles)
@@ -96,33 +105,39 @@ function bianyin_Callback(hObject, eventdata, handles)
 
 
 function luyingchuli(hObject, eventdata, handles)
-    recobj=audiorecorder;
-    recordblocking(recobj,5);
-    myRecording = getaudiodata(recobj);
-    if ~isempty(myRecording)
-        axes(handles.axes5);
-        Fs=8000;
-        time=(0:(length(myRecording)-1))/Fs;
-        plot(time,myRecording);
-        axis([0 5 -1 1]);
-        set(get(gca, 'YLabel'), 'String', '时域波形');
-        
-        [desicion,F,fft_process,daopu,frequency]=VoiceProcess(myRecording,Fs);
-        set(handles.xinbie,'string',strcat('性别：',desicion));
-        set(handles.sample,'string',strcat('采样率：',num2str(Fs)));
-        set(handles.jipin,'string',strcat('基频估计：',(num2str(frequency)),'Hz'));
-        axes(handles.axes6);
-        audio_fft=abs(fft(myRecording));
-        plot(Fs*(0:fix(length(myRecording)/2-1)/length(myRecording)),audio_fft(1:fix(length(myRecording)/2)));
-        set(get(gca, 'Title'), 'String', '频域对数功率谱');
-        set(get(gca, 'YLabel'), 'String', '功率/dB');
-        set(get(gca, 'XLabel'), 'String', '频率/Hz');
-        axes(handles.axes7);
-        disp(size(daopu(1:fix(size(daopu,1)/2),:)));
-        plot(daopu(1:fix(size(daopu,1)/2),:));
-        set(get(gca, 'Title'), 'String', '倒谱');
-        set(get(gca, 'YLabel'), 'String', '功率');
-        set(get(gca, 'XLabel'), 'String', 'ms');
+    global flag
+    while flag==1
+        recobj=audiorecorder;
+        recordblocking(recobj,3);
+        myRecording = getaudiodata(recobj);
+        if ~all(myRecording==0) 
+            audio_fft=abs(fft(myRecording));
+            axes(handles.axes5);
+            Fs=8000;
+            time=(0:(length(myRecording)-1))/Fs;
+            plot(time,myRecording);
+            axis([0 3 -1 1]);
+            set(get(gca, 'YLabel'), 'String', '时域波形');
+
+            [desicion,daopu,frequency]=VoiceProcess(myRecording,Fs);
+            set(handles.xinbie,'string',strcat('性别：',desicion));
+            set(handles.sample,'string',strcat('采样率：',num2str(Fs)));
+            set(handles.jipin,'string',strcat('基频估计：',(num2str(frequency)),'Hz'));
+            axes(handles.axes6);
+            disp(size(audio_fft));
+            f=(0:(length(myRecording)-1))*Fs/length(myRecording);
+            plot(f(1:fix(length(myRecording)/2)),audio_fft(1:fix(length(myRecording)/2)));
+
+            set(get(gca, 'Title'), 'String', '频域对数功率谱');
+            set(get(gca, 'YLabel'), 'String', '功率/dB');
+            set(get(gca, 'XLabel'), 'String', '频率/Hz');
+            axes(handles.axes7);
+            % disp(size(daopu(1:fix(size(daopu,1)/2),:)));
+            plot(daopu(1:fix(size(daopu,1)/2),:));
+            set(get(gca, 'Title'), 'String', '倒谱');
+            set(get(gca, 'YLabel'), 'String', '功率');
+            set(get(gca, 'XLabel'), 'String', 'ms');
+        end
     end
     
     

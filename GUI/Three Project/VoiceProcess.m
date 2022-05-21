@@ -1,4 +1,4 @@
-function [desicion,F ,fft_process,daopu, frequency]=VoiceProcess(audio_process,Sample_rate)
+function [desicion,daopu, frequency]=VoiceProcess(audio_process,Sample_rate)
 % 读取源文件
 % 分帧
 % 加窗
@@ -136,19 +136,19 @@ w(speak_index)=1;
 % 2022/5/21
 
 
-ee=X(:,speak_index(2));
+%ee=X(:,speak_index(1));
 % 从步长开始算
 % etime=frameTime(0:Ts:(wlen-1)*Ts);
 % % plot(etime,ee);
 
 % 取出没有加窗函数的一帧
 % 取出一帧一半的时间
-T_f_half=inc/Fs;
-T_index=(speak_index(2)-1)*inc;
+%T_f_half=inc/Fs;
+%T_index=(speak_index(2)-1)*inc;
 % T_index=T_f_half*(speak_index(1)-1);
 
-et=T_index/Fs:Ts:(T_index+wlen-1)/Fs;
-ee_nowin=y_process(T_index:(T_index+wlen-1));
+%et=T_index/Fs:Ts:(T_index+wlen-1)/Fs;
+%ee_nowin=y_process(T_index:(T_index+wlen-1));
 
 
 % 2022/5/21
@@ -171,14 +171,13 @@ ee_nowin=y_process(T_index:(T_index+wlen-1));
 % 2022/5/21
 % 加汉明窗的频域幅频图
 % subplot(3,1,3);
-X_fft=20*log10(abs(fft(ee,1024)));
-f=(0:1:511)*Fs/1024;
+%X_fft=20*log10(abs(fft(ee,1024)));
+%f=(0:1:511)*Fs/1024;
 % plot(f,X_fft(1:fix(length(X_fft)/2)));
 % set(get(gca, 'Title'), 'String', '加汉明窗的频谱图');
 % set(get(gca, 'YLabel'), 'String', '幅度/dB');
 % 2022/5/21
-F=f;
-fft_process=X_fft(1:fix(length(X_fft)/2));
+%fft_process=X_fft(1:fix(length(X_fft)/2));
 
 % 求倒谱，计算基频，使用已经加了汉明窗的去计算,只计算有浊音的
 y_need_cepstrum=X(:,speak_index);
