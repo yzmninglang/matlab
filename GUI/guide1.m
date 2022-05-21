@@ -1,35 +1,35 @@
-function varargout = guide(varargin)
-% GUIDE MATLAB code for guide.fig
-%      GUIDE, by itself, creates a new GUIDE or raises the existing
+function varargout = guide1(varargin)
+% GUIDE1 MATLAB code for guide1.fig
+%      GUIDE1, by itself, creates a new GUIDE1 or raises the existing
 %      singleton*.
 %
-%      H = GUIDE returns the handle to a new GUIDE or the handle to
+%      H = GUIDE1 returns the handle to a new GUIDE1 or the handle to
 %      the existing singleton*.
 %
-%      GUIDE('CALLBACK',hObject,eventData,handles,...) calls the local
-%      function named CALLBACK in GUIDE.M with the given input arguments.
+%      GUIDE1('CALLBACK',hObject,eventData,handles,...) calls the local
+%      function named CALLBACK in GUIDE1.M with the given input arguments.
 %
-%      GUIDE('Property','Value',...) creates a new GUIDE or raises the
+%      GUIDE1('Property','Value',...) creates a new GUIDE1 or raises the
 %      existing singleton*.  Starting from the left, property value pairs are
-%      applied to the GUI before guide_OpeningFcn gets called.  An
+%      applied to the GUI before guide1_OpeningFcn gets called.  An
 %      unrecognized property name or invalid value makes property application
-%      stop.  All inputs are passed to guide_OpeningFcn via varargin.
+%      stop.  All inputs are passed to guide1_OpeningFcn via varargin.
 %
 %      *See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
 %      instance to run (singleton)".
 %
 % See also: GUIDE, GUIDATA, GUIHANDLES
 
-% Edit the above text to modify the response to help guide
+% Edit the above text to modify the response to help guide1
 
-% Last Modified by GUIDE v2.5 21-May-2022 14:04:21
+% Last Modified by GUIDE v2.5 21-May-2022 14:36:00
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
 gui_State = struct('gui_Name',       mfilename, ...
                    'gui_Singleton',  gui_Singleton, ...
-                   'gui_OpeningFcn', @guide_OpeningFcn, ...
-                   'gui_OutputFcn',  @guide_OutputFcn, ...
+                   'gui_OpeningFcn', @guide1_OpeningFcn, ...
+                   'gui_OutputFcn',  @guide1_OutputFcn, ...
                    'gui_LayoutFcn',  [] , ...
                    'gui_Callback',   []);
 if nargin && ischar(varargin{1})
@@ -44,26 +44,26 @@ end
 % End initialization code - DO NOT EDIT
 
 
-% --- Executes just before guide is made visible.
-function guide_OpeningFcn(hObject, eventdata, handles, varargin)
+% --- Executes just before guide1 is made visible.
+function guide1_OpeningFcn(hObject, eventdata, handles, varargin)
 % This function has no output args, see OutputFcn.
 % hObject    handle to figure
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-% varargin   command line arguments to guide (see VARARGIN)
+% varargin   command line arguments to guide1 (see VARARGIN)
 
-% Choose default command line output for guide
+% Choose default command line output for guide1
 handles.output = hObject;
 
 % Update handles structure
 guidata(hObject, handles);
 
-% UIWAIT makes guide wait for user response (see UIRESUME)
+% UIWAIT makes guide1 wait for user response (see UIRESUME)
 % uiwait(handles.figure1);
 
 
 % --- Outputs from this function are returned to the command line.
-function varargout = guide_OutputFcn(hObject, eventdata, handles) 
+function varargout = guide1_OutputFcn(hObject, eventdata, handles) 
 % varargout  cell array for returning output args (see VARARGOUT);
 % hObject    handle to figure
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -74,8 +74,9 @@ varargout{1} = handles.output;
 
 
 % --- Executes on slider movement.
-function slider1_Callback(hObject, eventdata, handles)
-% hObject    handle to slider1 (see GCBO)
+function amp_Callback(hObject, eventdata, handles)
+    do(hObject, eventdata, handles);
+% hObject    handle to amp (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
@@ -84,8 +85,8 @@ function slider1_Callback(hObject, eventdata, handles)
 
 
 % --- Executes during object creation, after setting all properties.
-function slider1_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to slider1 (see GCBO)
+function amp_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to amp (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
@@ -96,8 +97,9 @@ end
 
 
 % --- Executes on slider movement.
-function slider2_Callback(hObject, eventdata, handles)
-% hObject    handle to slider2 (see GCBO)
+function huandu_Callback(hObject, eventdata, handles)
+    do(hObject, eventdata, handles);
+% hObject    handle to huandu (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
@@ -106,8 +108,8 @@ function slider2_Callback(hObject, eventdata, handles)
 
 
 % --- Executes during object creation, after setting all properties.
-function slider2_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to slider2 (see GCBO)
+function huandu_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to huandu (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
@@ -117,13 +119,35 @@ if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColo
 end
 
 
-% --- Executes on button press in QuitButton.
-function QuitButton_Callback(hObject, eventdata, handles)
-% hObject    handle to QuitButton (see GCBO)
+% --- Executes on button press in pushbutton1.
+function pushbutton1_Callback(hObject, eventdata, handles)
+    close;
+% hObject    handle to pushbutton1 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-close;
 
-function do(hObject ,eventdata,handles)
+function do(hObject,eventData,handles)
+    E=1.8*get(handles.amp,'value')+0.2;
+    tao=5*get(handles.huandu,'value')+1;
+    Ts=0.01;
+    t=-tao/2:Ts:tao/2;
+    x=E*(1+cos(2*pi*t/tao))/2;
+    axes(handles.axes1);
+    hh=plot(t,x);
+    set(hh,'linewidth',2);
+    axis([-4 4 0 2]);
+    w=-10:0.01:10;
+    X=E*tao/2*(sinc(w*tao/2/pi))./(1-power(w*tao/2/pi,2));
+    axes(handles.axes2);
+    HH = plot(w,X);
+    set(get(gca, 'XLabel'), 'String', 't');
+    set(get(gca, 'YLabel'), 'String', 'x(t)');
+    set(HH,'linewidth',2);
+    string_am=strcat('Õñ·ù',num2str(E));
 
+    set(handles.am,'string',string_am);
 
+    string_kuan=strcat('Âö³å¿í¶È',num2str(tao))
+    set(handles.huan,'string',string_kuan);
+    set(get(gca, 'XLabel'), 'String', '\omega');
+    set(get(gca, 'YLabel'), 'String', 'X(\omega)');
