@@ -112,8 +112,8 @@ function luyingchuli(hObject, eventdata, handles)
         set(handles.sample,'string',strcat('采样率：',num2str(Fs)));
         set(handles.jipin,'string',strcat('基频估计：',(num2str(frequency)),'Hz'));
         axes(handles.axes6);
-        audio_fft=abs(fft(myRecording));
-        plot(Fs*(0:fix(length(myRecording)/2-1)/length(myRecording)),audio_fft(1:fix(length(myRecording)/2)));
+        audio_fft=abs(fft(myRecording))
+        plot(Fs*(0:fix(length(myRecording)/2)/length(myRecording)),(0:fix(length(myRecording)/2));
         set(get(gca, 'Title'), 'String', '频域对数功率谱');
         set(get(gca, 'YLabel'), 'String', '功率/dB');
         set(get(gca, 'XLabel'), 'String', '频率/Hz');

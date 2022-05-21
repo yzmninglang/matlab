@@ -1,4 +1,4 @@
-function [desicion fft_process FoundmentalFrequencyDotNeedSmooth]=VoiceProcess(audio_process,Sample_rate)
+function [desicion,F ,fft_process,daopu, frequency]=VoiceProcess(audio_process,Sample_rate)
 % 读取源文件
 % 分帧
 % 加窗
@@ -64,22 +64,27 @@ end
 
 % 求出过零率
 Zratio=Z/length(X(:,i));
-subplot(3,1,1);
-plot(time,y_process);
-hold on;
-% h=plot(frameTime,Zratio);
+
+% 2022/5/21
+% subplot(3,1,1);
+% plot(time,y_process);
+% hold on;
+% % h=plot(frameTime,Zratio);
+% % set(h,'linewidth',2);
+% h=plot(frameTime,En/max(En));
 % set(h,'linewidth',2);
-h=plot(frameTime,En/max(En));
-set(h,'linewidth',2);
-axis([0 2 -1 1]);
-legend('sound signal','Energy');
-set(get(gca, 'Title'), 'String', 'Signal and Short term energy');
-subplot(3,1,2);
-stem(frameTime,Z);
-set(get(gca, 'Title'), 'String', ' Zero Crossing ratio');
-set(get(gca, 'XLabel'), 'String', '帧时间');
-set(get(gca, 'YLabel'), 'String', '过零的总点数');
-axis([0 2 0 500]);
+% axis([0 2 -1 1]);
+% legend('sound signal','Energy');
+% set(get(gca, 'Title'), 'String', 'Signal and Short term energy');
+% subplot(3,1,2);
+% stem(frameTime,Z);
+% set(get(gca, 'Title'), 'String', ' Zero Crossing ratio');
+% set(get(gca, 'XLabel'), 'String', '帧时间');
+% set(get(gca, 'YLabel'), 'String', '过零的总点数');
+% axis([0 2 0 500]);
+% 2022/5/21
+
+
 
 % subplot(2,1,2);
 % plot(Zratio);
@@ -98,9 +103,11 @@ w=zeros(1,fn);
 Energy_meet_index=find(En_ratio>0.12);
 w(Energy_meet_index)=1;
 % 观察情况
-hold on;
-stem(frameTime,w*200);
-legend('过零率','能量满足');
+% 2022/5/21
+% hold on;
+% stem(frameTime,w*200);
+% legend('过零率','能量满足');
+% 2022/5/21
 
 
 % 找出这些点中过零率小于100的,得到满足浊音的index
@@ -109,17 +116,26 @@ speak_index=intersect(find(Z<100),Energy_meet_index);
 % 画图
 w=zeros(1,fn);
 w(speak_index)=1;
-subplot(3,1,3);
-stem(frameTime,w);
-axis([0 2 0 2]);
-set(get(gca, 'Title'), 'String', '满足能量和过零率的帧');
-set(get(gca, 'XLabel'), 'String', '帧时间');
-set(get(gca, 'YLabel'), 'String', '是否满足');
+
+% 2022/5/21
+% subplot(3,1,3);
+% stem(frameTime,w);
+% axis([0 2 0 2]);
+% set(get(gca, 'Title'), 'String', '满足能量和过零率的帧');
+% set(get(gca, 'XLabel'), 'String', '帧时间');
+% set(get(gca, 'YLabel'), 'String', '是否满足');
+% 2022/5/21
 
 
 % 观察和对比加窗和不加窗的傅里叶变换的区别
 % 取出一帧
-figure();
+
+
+% 2022/5/21
+% figure();
+% 2022/5/21
+
+
 ee=X(:,speak_index(2));
 % 从步长开始算
 % etime=frameTime(0:Ts:(wlen-1)*Ts);
@@ -133,31 +149,36 @@ T_index=(speak_index(2)-1)*inc;
 
 et=T_index/Fs:Ts:(T_index+wlen-1)/Fs;
 ee_nowin=y_process(T_index:(T_index+wlen-1));
-subplot(3,1,1)
-h=plot(et,ee);
-set(h,'linewidth',2);
-hold on;
-h=plot(et,ee_nowin);
-legend('加窗','不加窗');
-set(h,'linewidth',2);
-set(get(gca, 'Title'), 'String', '是否加hamming窗的影响');
-
-subplot(3,1,2);
-X_fft=20*log10(abs(fft(ee_nowin,1024)));
-f=(0:1:511)*Fs/1024;
-plot(f,X_fft(1:fix(length(X_fft)/2)));
-set(get(gca, 'Title'), 'String', '未加汉明窗的频谱图');
-set(get(gca, 'YLabel'), 'String', '幅度/dB');
 
 
+% 2022/5/21
+% subplot(3,1,1)
+% h=plot(et,ee);
+% set(h,'linewidth',2);
+% hold on;
+% h=plot(et,ee_nowin);
+% legend('加窗','不加窗');
+% set(h,'linewidth',2);
+% set(get(gca, 'Title'), 'String', '是否加hamming窗的影响');
+
+% subplot(3,1,2);
+% X_fft=20*log10(abs(fft(ee_nowin,1024)));
+% f=(0:1:511)*Fs/1024;
+% plot(f,X_fft(1:fix(length(X_fft)/2)));
+% set(get(gca, 'Title'), 'String', '未加汉明窗的频谱图');
+% set(get(gca, 'YLabel'), 'String', '幅度/dB');
+% 2022/5/21
+% 2022/5/21
 % 加汉明窗的频域幅频图
-subplot(3,1,3);
+% subplot(3,1,3);
 X_fft=20*log10(abs(fft(ee,1024)));
 f=(0:1:511)*Fs/1024;
-plot(f,X_fft(1:fix(length(X_fft)/2)));
-set(get(gca, 'Title'), 'String', '加汉明窗的频谱图');
-set(get(gca, 'YLabel'), 'String', '幅度/dB');
-
+% plot(f,X_fft(1:fix(length(X_fft)/2)));
+% set(get(gca, 'Title'), 'String', '加汉明窗的频谱图');
+% set(get(gca, 'YLabel'), 'String', '幅度/dB');
+% 2022/5/21
+F=f;
+fft_process=X_fft(1:fix(length(X_fft)/2));
 
 % 求倒谱，计算基频，使用已经加了汉明窗的去计算,只计算有浊音的
 y_need_cepstrum=X(:,speak_index);
@@ -167,8 +188,11 @@ y_cepstrum_speak=rceps(y_need_cepstrum);
 % 将没有声音的那一段补上0
 y_cepstrum=zeros(size(X,1),size(X,2));
 y_cepstrum(:,speak_index)=y_cepstrum_speak;
+% 2022/5/21
+% figure();
+% 2022/5/21
+daopu=y_cepstrum_speak;
 
-figure();
 % plot(y_cepstrum_speak);
 
 % figure();
@@ -230,9 +254,13 @@ end
 
 % plot(foundmental_frequency);
 % plot(frameTime,FoundmentalFrequencyDot);
-plot(FoundmentalFrequencyDotNeedSmooth);
 
-hold on;
+% 2022/5/21
+% plot(FoundmentalFrequencyDotNeedSmooth);
+% 2022/5/21
+
+
+% hold on;
 % 对FoundmentalFrequencyDot线性平滑
 % 设计一个平滑滤波器x=[0.1 0.2 0.4  0.2 0,1]
 % filter_1=[0.2 0.3 0.3 0.2];
@@ -240,13 +268,14 @@ hold on;
 
 % 中值滤波
 FoundmentalFrequencyDotFiltered=movmedian(FoundmentalFrequencyDotNeedSmooth,3);
+% 2022/5/21
+% plot(FoundmentalFrequencyDotFiltered);
 
-plot(FoundmentalFrequencyDotFiltered);
-
-set(get(gca, 'Title'), 'String', '浊音倒谱有效序列');
-set(get(gca, 'XLabel'), 'String', 'Speak Voice Index');
-set(get(gca, 'YLabel'), 'String', 'Number of dots');
-legend('没有滤波','滤波之后');
+% set(get(gca, 'Title'), 'String', '浊音倒谱有效序列');
+% set(get(gca, 'XLabel'), 'String', 'Speak Voice Index');
+% set(get(gca, 'YLabel'), 'String', 'Number of dots');
+% legend('没有滤波','滤波之后');
+% 2022/5/21
 
 ffe_filtered=Fs./(FoundmentalFrequencyDotFiltered(FoundmentalFrequencyDotFiltered>0));
 
@@ -269,19 +298,29 @@ ffe_filtered=Fs./(FoundmentalFrequencyDotFiltered(FoundmentalFrequencyDotFiltere
 %     disp('gril')
 %     frequency=mean(ffe(find(ffe>180 & ffe<450)));
 % end
-figure();
+
+
+% 2022/5/21
+% figure();
+
+% plot(y_cepstrum_speak(1:fix(size(y_cepstrum_speak,1)/2),:));
+% set(get(gca, 'Title'), 'String', ['Sample Rate:',num2str(Fs)]);
+% 2022/5/21
+
+
+
 % stem(ffe)
-plot(y_cepstrum_speak(1:fix(size(y_cepstrum_speak,1)/2),:));
-set(get(gca, 'Title'), 'String', ['Sample Rate:',num2str(Fs)]);
 % ffe_T=1./ffe;
 
 % 这是ffe_fliter的方法
 ffe=foundmental_frequency(foundmental_frequency>0);
 if length(ffe_filtered(ffe_filtered<200))>=length(ffe_filtered(find(ffe_filtered>=210 & ffe_filtered<420)))
-    disp('Boy')
+    % disp('Boy')
+    desicion='Boy';
     frequency=mean(ffe_filtered(find(ffe_filtered>60 & ffe_filtered <250)));
 else
-    disp('gril')
+    % disp('gril')
+    desicion='Girl';
     frequency=mean(ffe_filtered(find(ffe_filtered>180 & ffe_filtered<440)));
 end
 disp(['Frequency:',num2str(frequency)]);
