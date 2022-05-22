@@ -22,7 +22,7 @@ function varargout = Tree(varargin)
 
 % Edit the above text to modify the response to help Tree
 
-% Last Modified by GUIDE v2.5 21-May-2022 15:05:47
+% Last Modified by GUIDE v2.5 22-May-2022 15:30:54
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -42,6 +42,8 @@ else
     gui_mainfcn(gui_State, varargin{:});
 end
 global flag
+
+global audio Fs
 flag =0;
 % End initialization code - DO NOT EDIT
 
@@ -92,6 +94,15 @@ function luzhi_Callback(hObject, eventdata, handles)
 
 % --- Executes on button press in jiangzao.
 function jiangzao_Callback(hObject, eventdata, handles)
+    [name, path1]= uigetfile('*.wav');
+    path1=strcat(path1,name);
+    set(handles.zhuantai,'string','½µÔë×´Ì¬£º¿ªÊ¼');
+    global audio Fs
+    if ~isempty(path1)
+        [audio ,Fs]=jiangzao(path1);
+    end
+    set(handles.zhuantai,'string','½µÔë×´Ì¬£º½áÊø');
+    
 % hObject    handle to jiangzao (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -141,3 +152,15 @@ function luyingchuli(hObject, eventdata, handles)
     end
     
     
+
+
+% --- Executes on button press in playjiang.
+function playjiang_Callback(hObject, eventdata, handles)
+    global audio Fs
+    if ~isempty(audio) & Fs ~=0
+        disp('yes');
+        sound(audio,Fs);
+    end
+% hObject    handle to playjiang (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
