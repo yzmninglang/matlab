@@ -1,4 +1,4 @@
-function [desicion,daopu, frequency]=VoiceProcess(audio_process,Sample_rate)
+function [desicion,daopu, frequency]=VoiceProcess(audio_process,Sample_rate,hObject,handles)
 % 读取源文件
 % 分帧
 % 加窗
@@ -29,6 +29,11 @@ time=(0:N-1)/Fs;% 计算出信号的时间刻度(不是帧的时间刻度)
 
 X=enframe(y_process,win,inc)'; %分帧,一列是一帧,这里一定要转置
 fn=size(X,2);%帧数
+
+% axes(handles.axes11);
+% spectrogram(audio_process,win);%绘制语谱图 'yaxis'代表频率轴在Y轴
+% title('语谱图')
+
 
 % 这个所对应的时间需要自己算
 frameTime=(0:(fn-1))/fn*(length(y_process)/Fs);  %求出每帧对应的时间
@@ -67,6 +72,7 @@ Zratio=Z/length(X(:,i));
 
 % 2022/5/21
 % subplot(3,1,1);
+% axes(handles.axes12);
 % plot(time,y_process);
 % hold on;
 % % h=plot(frameTime,Zratio);

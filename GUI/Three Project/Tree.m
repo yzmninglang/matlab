@@ -22,7 +22,7 @@ function varargout = Tree(varargin)
 
 % Edit the above text to modify the response to help Tree
 
-% Last Modified by GUIDE v2.5 22-May-2022 15:30:54
+% Last Modified by GUIDE v2.5 22-May-2022 16:53:57
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -41,10 +41,12 @@ if nargout
 else
     gui_mainfcn(gui_State, varargin{:});
 end
-global flag
+global flag flag1
+flag =0;
+flag1 =0;
 
 global audio Fs
-flag =0;
+
 % End initialization code - DO NOT EDIT
 
 
@@ -92,18 +94,18 @@ function luzhi_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
     
 
-% --- Executes on button press in jiangzao.
+% --- Executes on button press in jiangzaoba.
 function jiangzao_Callback(hObject, eventdata, handles)
     [name, path1]= uigetfile('*.wav');
     path1=strcat(path1,name);
     set(handles.zhuantai,'string','降噪状态：开始');
     global audio Fs
     if ~isempty(path1)
-        [audio ,Fs]=jiangzao(path1);
+        [audio ,Fs]=jiangzao(path1,handles);
     end
     set(handles.zhuantai,'string','降噪状态：结束');
     
-% hObject    handle to jiangzao (see GCBO)
+% hObject    handle to jiangzaoba (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
@@ -130,7 +132,7 @@ function luyingchuli(hObject, eventdata, handles)
             axis([0 3 -1 1]);
             set(get(gca, 'YLabel'), 'String', '时域波形');
 
-            [desicion,daopu,frequency]=VoiceProcess(myRecording,Fs);
+            [desicion,daopu,frequency]=VoiceProcess(myRecording,Fs,hObject,handles);
             set(handles.xinbie,'string',strcat('性别：',desicion));
             set(handles.sample,'string',strcat('采样率：',num2str(Fs)));
             set(handles.jipin,'string',strcat('基频估计：',(num2str(frequency)),'Hz'));
@@ -162,5 +164,12 @@ function playjiang_Callback(hObject, eventdata, handles)
         sound(audio,Fs);
     end
 % hObject    handle to playjiang (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --- Executes on button press in pushbutton10.
+
+% hObject    handle to pushbutton11 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
