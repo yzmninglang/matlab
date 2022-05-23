@@ -6,7 +6,7 @@
 
 
 % 截取一段语音信号，证明浊音语音信号具有周期性，然后在对其基频进行分析
-[y,Fs]=audioread('xin5.wav');
+[y,Fs]=audioread('xiboliya_gril.wav');
 y=y(:,1);
 
 
@@ -26,7 +26,8 @@ inc=fix(wlen*0.25);
 win=hamming(wlen);%海明窗
 N=length(y_process);%信号长度
 time=(0:N-1)/Fs;% 计算出信号的时间刻度(不是帧的时间刻度)
-
+spectrogram(y_process,win,inc);
+figure(); 
 X=enframe(y_process,win,inc)'; %分帧,一列是一帧,这里一定要转置
 fn=size(X,2);%帧数
 
@@ -271,7 +272,12 @@ ffe_filtered=Fs./(FoundmentalFrequencyDotFiltered(FoundmentalFrequencyDotFiltere
 % end
 figure();
 % stem(ffe)
-plot(y_cepstrum_speak(1:fix(size(y_cepstrum_speak,1)/2),:));
+subplot(2,1,1);
+h=plot(y_cepstrum_speak(1:fix(size(y_cepstrum_speak,1)/2),:));
+set(h,'linewidth',2);
+% max()
+% hold on;
+% h=line([54 54],[0 0.23])
 set(get(gca, 'Title'), 'String', ['Sample Rate:',num2str(Fs)]);
 % ffe_T=1./ffe;
 

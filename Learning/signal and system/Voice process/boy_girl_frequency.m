@@ -4,15 +4,40 @@
 boy=boy(:,1);
 time=(0:length(boy)-1)/Fs;
 % 分析一帧
-boy=boy(find(time>1.72 & time <1.78));
-time=time(find(time>1.72 & time <1.78));
+boy=boy(find(time>0.72 & time <2.1));
+time=time(find(time>0.72 & time <2.1));
 subplot(3,1,1);
+boy= boy+rand(length(boy),1)*0.1-rand(length(boy),1)*0.1;
 h=plot(time,boy);
-set(h,'linewidth',2);
+axis([0.6 2.5 -1.5 1.5]);
+% set(h,'linewidth',2);
 title('男声ABC');
 xlabel('时间/s');
 ylabel('幅度');
-% axis([0.5 2 -1 1]);
+
+
+
+% win=hamming(length(boy));
+
+% h=plot(time,boy);
+% set(h,'linewidth',2);
+% title('男声ABC');
+% xlabel('时间/s');
+% ylabel('幅度');
+% % axis([0.5 2 -1 1]);
+% % 男声频域
+% boy_fft=abs(fft(boy));
+% boy_fft=boy_fft/max(boy_fft);
+% f=Fs*(0:length(boy))/length(boy);
+% % 只看3000以内的
+% n=fix(3000/Fs*length(boy));
+% h=plot(f(1:n),boy_fft(1:n));
+% set(h,'linewidth',2);
+% title('男声ABC');
+% xlabel('频率/Hz');
+% ylabel('幅度');
+% % hold on;
+% boy=boy.*win;
 
 % 男声频域
 % boy_fft=abs(fft(boy));
@@ -20,7 +45,8 @@ ylabel('幅度');
 % f=Fs*(0:length(boy))/length(boy);
 % % 只看3000以内的
 % n=fix(3000/Fs*length(boy));
-% plot(f(1:n),boy_fft(1:n))
+% h=plot(f(1:n),boy_fft(1:n));
+% set(h,'linewidth',2);
 % title('男声ABC');
 % xlabel('频率/Hz');
 % ylabel('幅度');
@@ -31,7 +57,7 @@ ylabel('幅度');
 [girl,Fs]=audioread('girl_ABC.wav');
 girl=girl(:,1);
 time=(0:length(girl)-1)/Fs;
-subplot(3,1,2);
+subplot(3,1,3);
 h=plot(time(find(time>1.14 & time<1.15)),girl(find(time>1.14 & time<1.15)),':r');
 set(h,'linewidth',2);
 title('女生ABC');
