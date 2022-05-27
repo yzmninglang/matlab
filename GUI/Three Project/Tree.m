@@ -22,7 +22,7 @@ function varargout = Tree(varargin)
 
 % Edit the above text to modify the response to help Tree
 
-% Last Modified by GUIDE v2.5 22-May-2022 16:53:57
+% Last Modified by GUIDE v2.5 26-May-2022 21:28:56
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -45,7 +45,7 @@ global flag flag1
 flag =0;
 flag1 =0;
 
-global audio Fs
+global audio Fs path
 
 % End initialization code - DO NOT EDIT
 
@@ -97,13 +97,10 @@ function luzhi_Callback(hObject, eventdata, handles)
 % --- Executes on button press in jiangzaoba.
 function jiangzao_Callback(hObject, eventdata, handles)
     [name, path1]= uigetfile('*.wav');
-    path1=strcat(path1,name);
-    set(handles.zhuantai,'string','½µÔë×´Ì¬£º¿ªÊ¼');
-    global audio Fs
-    if ~isempty(path1)
-        [audio ,Fs]=jiangzao(path1,handles);
-    end
-    set(handles.zhuantai,'string','½µÔë×´Ì¬£º½áÊø');
+    global path
+    path=strcat(path1,name);
+
+
     
 % hObject    handle to jiangzaoba (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -173,3 +170,82 @@ function playjiang_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton11 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+
+
+% --- Executes on slider movement.
+function slider2_Callback(hObject, eventdata, handles)
+    global path Fs audio
+    disp(get(handles.slider2,'value'));
+    if ~isempty(path)
+        [y,fs]=audioread(path);
+        do(hObject, eventdata, handles,y,fs,1);
+        do(hObject, eventdata, handles,y,fs,2);
+        Fs = round(get(handles.slider2,'value')*fs);
+        if Fs<1000
+            Fs=1000
+        end
+        audio = resample(y,Fs,fs);
+        do(hObject, eventdata, handles,audio,Fs,3);
+        set(handles.sample,'string',strcat('²ÉÑùÂÊ£º',num2str(Fs)));
+    end
+% hObject    handle to slider2 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'Value') returns position of slider
+%        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
+
+
+% --- Executes during object creation, after setting all properties.
+function slider2_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to slider2 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: slider controls usually have a light gray background.
+if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor',[.9 .9 .9]);
+end
+
+
+% --- Executes on button press in jiangzhao1.
+function jiangzhao1_Callback(hObject, eventdata, handles)
+    global path
+    set(handles.jiangzaoba,'string','½µÔë×´Ì¬£º¿ªÊ¼');
+    global audio Fs
+    if ~isempty(path)
+        [audio ,Fs]=jiangzao(path,handles);
+    end
+    set(handles.jiangzaoba,'string','½µÔë×´Ì¬£º½áÊø');
+  
+% hObject    handle to jiangzhao1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+function do(hObject, eventdata, handles,audio,Fs,number)
+    if number==1
+        t=(0:length(audio)-1)/Fs;
+        axes(handles.axes5);
+        plot(t,audio);
+        xlabel('T/s');
+        ylabel('·ù¶È');
+        title('Ê±ÓòÍ¼');
+    elseif number==2
+        f=(0:length(audio)-1)/length(audio)*Fs;
+        axes(handles.axes6);
+        y_f=abs(fft(audio));
+        y_f=y_f/max(y_f);
+        plot(f(find(f<4000)),y_f(find(f<4000)));
+        xlabel('ÆµÂÊ/Hz');
+        ylabel('·ù¶È');
+        title('Ô­ÐÅºÅÆµÓòÍ¼');
+    else
+        f=(0:length(audio)-1)/length(audio)*Fs;
+        axes(handles.axes7);
+        y_f=abs(fft(audio));
+        y_f=y_f/max(y_f);
+        plot(f(find(f<4000)),y_f(find(f<4000)));
+        xlabel('ÆµÂÊ/Hz');
+        ylabel('·ù¶È');
+        title('½µ²ÉÑùºóÆµÓòÍ¼');
+    end
