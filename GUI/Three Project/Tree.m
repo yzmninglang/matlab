@@ -22,7 +22,7 @@ function varargout = Tree(varargin)
 
 % Edit the above text to modify the response to help Tree
 
-% Last Modified by GUIDE v2.5 26-May-2022 21:28:56
+% Last Modified by GUIDE v2.5 29-May-2022 21:43:42
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -41,9 +41,10 @@ if nargout
 else
     gui_mainfcn(gui_State, varargin{:});
 end
-global flag flag1
+global flag flag1 flagy
 flag =0;
 flag1 =0;
+flagy =0;
 
 global audio Fs path
 
@@ -127,24 +128,37 @@ function luyingchuli(hObject, eventdata, handles)
             time=(0:(length(myRecording)-1))/Fs;
             plot(time,myRecording);
             axis([0 3 -1 1]);
-            set(get(gca, 'YLabel'), 'String', '时域波形');
-
+            set(get(gca, 'YLabel'), 'String', '幅度');
+            t=title('时域波形');
+            t.FontSize=14;
             [desicion,daopu,frequency]=VoiceProcess(myRecording,Fs,hObject,handles);
             set(handles.xinbie,'string',strcat('性别：',desicion));
             set(handles.sample,'string',strcat('采样率：',num2str(Fs)));
             set(handles.jipin,'string',strcat('基频估计：',(num2str(frequency)),'Hz'));
             axes(handles.axes6);
             disp(size(audio_fft));
+            % global flagy
+            % if flagy==0
             f=(0:(length(myRecording)-1))*Fs/length(myRecording);
             plot(f(1:fix(length(myRecording)/2)),audio_fft(1:fix(length(myRecording)/2)));
 
-            set(get(gca, 'Title'), 'String', '频域对数功率谱');
+            t=title('频域对数功率谱');
+            t.FontSize=14;
             set(get(gca, 'YLabel'), 'String', '功率/dB');
             set(get(gca, 'XLabel'), 'String', '频率/Hz');
+            % else
+            % figure(1);
+            % subplot(3,1,2);
+            % spectrogram(myRecording,256,128,256,8000,'yaxis');
+            % xlabel('时间(s)')
+            % ylabel('频率(KHz)')
+            % title('语谱图');
+            % end
             axes(handles.axes7);
             % disp(size(daopu(1:fix(size(daopu,1)/2),:)));
             plot(daopu(1:fix(size(daopu,1)/2),:));
-            set(get(gca, 'Title'), 'String', '倒谱');
+            t=title('倒谱');
+            t.FontSize=14;
             set(get(gca, 'YLabel'), 'String', '功率');
             set(get(gca, 'XLabel'), 'String', 'ms');
         end
@@ -229,7 +243,8 @@ function do(hObject, eventdata, handles,audio,Fs,number)
         plot(t,audio);
         xlabel('T/s');
         ylabel('幅度');
-        title('时域图');
+        t=title('时域图');
+        t.FontSize=14;
     elseif number==2
         f=(0:length(audio)-1)/length(audio)*Fs;
         axes(handles.axes6);
@@ -238,7 +253,8 @@ function do(hObject, eventdata, handles,audio,Fs,number)
         plot(f(find(f<4000)),y_f(find(f<4000)));
         xlabel('频率/Hz');
         ylabel('幅度');
-        title('原信号频域图');
+        t=title('原信号频域图');
+        t.FontSize=14;
     else
         f=(0:length(audio)-1)/length(audio)*Fs;
         axes(handles.axes7);
@@ -247,5 +263,22 @@ function do(hObject, eventdata, handles,audio,Fs,number)
         plot(f(find(f<4000)),y_f(find(f<4000)));
         xlabel('频率/Hz');
         ylabel('幅度');
-        title('降采样后频域图');
+        t=title('降采样后频域图');
+        t.FontSize=14;
     end
+
+
+% --- Executes on button press in yupub.
+function yupub_Callback(hObject, eventdata, handles)
+    global flagy
+    if flagy==0
+        flagy=1;
+    else
+        flagy=0;
+    end
+
+% hObject    handle to yupub (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of yupub

@@ -7,14 +7,17 @@ function [audio ,Fs] = jiangzao(file,handles)
     plot(time,x);
     axis([0 max(time) -1 1]);
     set(get(gca, 'YLabel'), 'String', '幅度');
-    title('原信号时域')
+    set(get(gca, 'XLabel'), 'String', 'T/s');
+    t=title('原信号时域');
+    t.FontSize=14;
 
     audio_fft=abs(fft(x));
     axes(handles.axes6);
     f=(0:(length(x)-1))*fs/length(x);
     plot(f(1:fix(length(x)/2)),audio_fft(1:fix(length(x)/2)));
 
-    set(get(gca, 'Title'), 'String', '原信号频域对数功率谱');
+    t=title('原信号频域对数功率谱');
+    t.FontSize=14;
     set(get(gca, 'YLabel'), 'String', '功率/dB');
     set(get(gca, 'XLabel'), 'String', '频率/Hz');
 
@@ -29,7 +32,9 @@ function [audio ,Fs] = jiangzao(file,handles)
     plot(time,y);
     axis([0 max(time) -1 1]);
     set(get(gca, 'YLabel'), 'String', '时域波形');
-    title('去噪之后时域波形');
+    set(get(gca, 'XLabel'), 'String', 'T/s');
+    t=title('去噪之后时域波形');
+    t.FontSize=14;
     
     audiowrite('qq1.wav',y,Fs);
     

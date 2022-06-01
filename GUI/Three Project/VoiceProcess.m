@@ -188,7 +188,11 @@ w(speak_index)=1;
 % 求倒谱，计算基频，使用已经加了汉明窗的去计算,只计算有浊音的
 y_need_cepstrum=X(:,speak_index);
 % 求出倒谱
-y_cepstrum_speak=rceps(y_need_cepstrum);
+if all(isreal(y_need_cepstrum))
+    y_cepstrum_speak=rceps(y_need_cepstrum);
+else
+    y_cepstrum_speak=zeros(size(y_need_cepstrum));
+end
 
 % 将没有声音的那一段补上0
 y_cepstrum=zeros(size(X,1),size(X,2));

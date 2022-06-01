@@ -22,7 +22,7 @@ function varargout = guide1(varargin)
 
 % Edit the above text to modify the response to help guide1
 
-% Last Modified by GUIDE v2.5 21-May-2022 14:36:00
+% Last Modified by GUIDE v2.5 31-May-2022 22:57:39
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -75,7 +75,8 @@ varargout{1} = handles.output;
 
 % --- Executes on slider movement.
 function amp_Callback(hObject, eventdata, handles)
-    do(hObject, eventdata, handles);
+    set(hObject.edit1,'String','ÄãºÃ');
+    %do(hObject, eventdata, handles);
 % hObject    handle to amp (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -121,7 +122,7 @@ end
 
 % --- Executes on button press in pushbutton1.
 function pushbutton1_Callback(hObject, eventdata, handles)
-    close;
+    set(handles.edit1,'String','ÄãºÃ');
 % hObject    handle to pushbutton1 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -151,3 +152,26 @@ function do(hObject,eventData,handles)
     set(handles.huan,'string',string_kuan);
     set(get(gca, 'XLabel'), 'String', '\omega');
     set(get(gca, 'YLabel'), 'String', 'X(\omega)');
+
+
+
+function edit1_Callback(hObject, eventdata, handles)
+% hObject    handle to edit1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of edit1 as text
+%        str2double(get(hObject,'String')) returns contents of edit1 as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function edit1_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to edit1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
