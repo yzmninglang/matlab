@@ -1,0 +1,881 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Tree</title><meta name="generator" content="MATLAB 9.1"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-06-01"><meta name="DC.source" content="Tree.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><pre class="codeinput"><span class="keyword">function</span> varargout = Tree(varargin)
+<span class="comment">% TREE MATLAB code for Tree.fig</span>
+<span class="comment">%      TREE, by itself, creates a new TREE or raises the existing</span>
+<span class="comment">%      singleton*.</span>
+<span class="comment">%</span>
+<span class="comment">%      H = TREE returns the handle to a new TREE or the handle to</span>
+<span class="comment">%      the existing singleton*.</span>
+<span class="comment">%</span>
+<span class="comment">%      TREE('CALLBACK',hObject,eventData,handles,...) calls the local</span>
+<span class="comment">%      function named CALLBACK in TREE.M with the given input arguments.</span>
+<span class="comment">%</span>
+<span class="comment">%      TREE('Property','Value',...) creates a new TREE or raises the</span>
+<span class="comment">%      existing singleton*.  Starting from the left, property value pairs are</span>
+<span class="comment">%      applied to the GUI before Tree_OpeningFcn gets called.  An</span>
+<span class="comment">%      unrecognized property name or invalid value makes property application</span>
+<span class="comment">%      stop.  All inputs are passed to Tree_OpeningFcn via varargin.</span>
+<span class="comment">%</span>
+<span class="comment">%      *See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one</span>
+<span class="comment">%      instance to run (singleton)".</span>
+<span class="comment">%</span>
+<span class="comment">% See also: GUIDE, GUIDATA, GUIHANDLES</span>
+
+<span class="comment">% Edit the above text to modify the response to help Tree</span>
+
+<span class="comment">% Last Modified by GUIDE v2.5 01-Jun-2022 15:35:42</span>
+
+<span class="comment">% Begin initialization code - DO NOT EDIT</span>
+gui_Singleton = 1;
+gui_State = struct(<span class="string">'gui_Name'</span>,       mfilename, <span class="keyword">...</span>
+                   <span class="string">'gui_Singleton'</span>,  gui_Singleton, <span class="keyword">...</span>
+                   <span class="string">'gui_OpeningFcn'</span>, @Tree_OpeningFcn, <span class="keyword">...</span>
+                   <span class="string">'gui_OutputFcn'</span>,  @Tree_OutputFcn, <span class="keyword">...</span>
+                   <span class="string">'gui_LayoutFcn'</span>,  [] , <span class="keyword">...</span>
+                   <span class="string">'gui_Callback'</span>,   []);
+<span class="keyword">if</span> nargin &amp;&amp; ischar(varargin{1})
+    gui_State.gui_Callback = str2func(varargin{1});
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> nargout
+    [varargout{1:nargout}] = gui_mainfcn(gui_State, varargin{:});
+<span class="keyword">else</span>
+    gui_mainfcn(gui_State, varargin{:});
+<span class="keyword">end</span>
+<span class="keyword">global</span> flag flag1 flagy
+
+flag =0;
+flag1 =0;
+flagy =0;
+
+
+
+<span class="comment">% global audio Fs path</span>
+
+<span class="comment">% End initialization code - DO NOT EDIT</span>
+
+
+<span class="comment">% --- Executes just before Tree is made visible.</span>
+<span class="keyword">function</span> Tree_OpeningFcn(hObject, eventdata, handles, varargin)
+<span class="comment">% This function has no output args, see OutputFcn.</span>
+<span class="comment">% hObject    handle to figure</span>
+<span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+<span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+<span class="comment">% varargin   command line arguments to Tree (see VARARGIN)</span>
+
+<span class="comment">% Choose default command line output for Tree</span>
+handles.output = hObject;
+
+<span class="comment">% Update handles structure</span>
+guidata(hObject, handles);
+
+<span class="keyword">global</span> AM_Fs
+AM_Fs=0;
+
+
+<span class="comment">% UIWAIT makes Tree wait for user response (see UIRESUME)</span>
+<span class="comment">% uiwait(handles.figure1);</span>
+
+
+<span class="comment">% --- Outputs from this function are returned to the command line.</span>
+<span class="keyword">function</span> varargout = Tree_OutputFcn(hObject, eventdata, handles)
+<span class="comment">% varargout  cell array for returning output args (see VARARGOUT);</span>
+<span class="comment">% hObject    handle to figure</span>
+<span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+<span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+
+<span class="comment">% Get default command line output from handles structure</span>
+varargout{1} = handles.output;
+
+
+<span class="comment">% --- Executes on button press in luzhi.</span>
+<span class="keyword">function</span> luzhi_Callback(hObject, eventdata, handles)
+    <span class="keyword">global</span> flag
+    flag = ~flag ;
+    <span class="keyword">if</span> flag==0
+        set(handles.zhuantai,<span class="string">'string'</span>,<span class="string">'&#29366;&#24577;&#65306;&#20572;&#27490;'</span>);
+    <span class="keyword">else</span>
+        set(handles.zhuantai,<span class="string">'string'</span>,<span class="string">'&#29366;&#24577;&#65306;&#24037;&#20316;'</span>);
+    <span class="keyword">end</span>
+    luyingchuli(hObject, eventdata, handles);
+<span class="comment">% hObject    handle to luzhi (see GCBO)</span>
+<span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+<span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+
+
+<span class="comment">% --- Executes on button press in jiangzaoba.</span>
+<span class="keyword">function</span> jiangzao_Callback(hObject, eventdata, handles)
+    [name, path1]= uigetfile(<span class="string">'*.wav'</span>);
+    <span class="keyword">global</span> path
+    path=strcat(path1,name);
+
+
+
+<span class="comment">% hObject    handle to jiangzaoba (see GCBO)</span>
+<span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+<span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+
+
+<span class="comment">% --- Executes on button press in bianyin.</span>
+<span class="keyword">function</span> bianyin_Callback(hObject, eventdata, handles)
+<span class="comment">% hObject    handle to bianyin (see GCBO)</span>
+<span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+<span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+
+
+<span class="keyword">function</span> luyingchuli(hObject, eventdata, handles)
+    <span class="keyword">global</span> flag
+    <span class="keyword">while</span> flag==1
+        recobj=audiorecorder;
+        recordblocking(recobj,3);
+        myRecording = getaudiodata(recobj);
+        <span class="keyword">if</span> ~all(myRecording==0)
+            audio_fft=abs(fft(myRecording));
+            axes(handles.axes5);
+            Fs=8000;
+            time=(0:(length(myRecording)-1))/Fs;
+            plot(time,myRecording);
+            axis([0 3 -1 1]);
+            set(get(gca, <span class="string">'YLabel'</span>), <span class="string">'String'</span>, <span class="string">'&#24133;&#24230;'</span>);
+            t=title(<span class="string">'&#26102;&#22495;&#27874;&#24418;'</span>);
+            t.FontSize=14;
+            [desicion,daopu,frequency]=VoiceProcess(myRecording,Fs,hObject,handles);
+            set(handles.xinbie,<span class="string">'string'</span>,strcat(<span class="string">'&#24615;&#21035;&#65306;'</span>,desicion));
+            set(handles.sample,<span class="string">'string'</span>,strcat(<span class="string">'&#37319;&#26679;&#29575;&#65306;'</span>,num2str(Fs)));
+            set(handles.jipin,<span class="string">'string'</span>,strcat(<span class="string">'&#22522;&#39057;&#20272;&#35745;&#65306;'</span>,(num2str(frequency)),<span class="string">'Hz'</span>));
+            axes(handles.axes6);
+            disp(size(audio_fft));
+            <span class="comment">% global flagy</span>
+            <span class="comment">% if flagy==0</span>
+            f=(0:(length(myRecording)-1))*Fs/length(myRecording);
+            plot(f(1:fix(length(myRecording)/2)),audio_fft(1:fix(length(myRecording)/2)));
+
+            t=title(<span class="string">'&#39057;&#22495;&#23545;&#25968;&#21151;&#29575;&#35889;'</span>);
+            t.FontSize=14;
+            set(get(gca, <span class="string">'YLabel'</span>), <span class="string">'String'</span>, <span class="string">'&#21151;&#29575;/dB'</span>);
+            set(get(gca, <span class="string">'XLabel'</span>), <span class="string">'String'</span>, <span class="string">'&#39057;&#29575;/Hz'</span>);
+            <span class="comment">% else</span>
+            <span class="comment">% figure(1);</span>
+            <span class="comment">% subplot(3,1,2);</span>
+            <span class="comment">% spectrogram(myRecording,256,128,256,8000,'yaxis');</span>
+            <span class="comment">% xlabel('&#26102;&#38388;(s)')</span>
+            <span class="comment">% ylabel('&#39057;&#29575;(KHz)')</span>
+            <span class="comment">% title('&#35821;&#35889;&#22270;');</span>
+            <span class="comment">% end</span>
+            axes(handles.axes7);
+            <span class="comment">% disp(size(daopu(1:fix(size(daopu,1)/2),:)));</span>
+            plot(daopu(1:fix(size(daopu,1)/2),:));
+            t=title(<span class="string">'&#20498;&#35889;'</span>);
+            t.FontSize=14;
+            set(get(gca, <span class="string">'YLabel'</span>), <span class="string">'String'</span>, <span class="string">'&#21151;&#29575;'</span>);
+            set(get(gca, <span class="string">'XLabel'</span>), <span class="string">'String'</span>, <span class="string">'ms'</span>);
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+
+
+
+
+<span class="comment">% --- Executes on button press in playjiang.</span>
+<span class="keyword">function</span> playjiang_Callback(hObject, eventdata, handles)
+    <span class="keyword">global</span> audio Fs
+    <span class="keyword">if</span> ~isempty(audio) &amp; Fs ~=0
+        disp(<span class="string">'yes'</span>);
+        sound(audio,Fs);
+    <span class="keyword">end</span>
+<span class="comment">% hObject    handle to playjiang (see GCBO)</span>
+<span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+<span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+
+
+<span class="comment">% --- Executes on button press in pushbutton10.</span>
+
+<span class="comment">% hObject    handle to pushbutton11 (see GCBO)</span>
+<span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+<span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+
+
+<span class="comment">% --- Executes on slider movement.</span>
+<span class="keyword">function</span> slider2_Callback(hObject, eventdata, handles)
+    <span class="keyword">global</span> path Fs audio
+    disp(get(handles.slider2,<span class="string">'value'</span>));
+    <span class="keyword">if</span> ~isempty(path)
+        [y,fs]=audioread(path);
+        do(hObject, eventdata, handles,y,fs,1);
+        do(hObject, eventdata, handles,y,fs,2);
+        Fs = round(get(handles.slider2,<span class="string">'value'</span>)*fs);
+        <span class="keyword">if</span> Fs&lt;1000
+            Fs=1000
+        <span class="keyword">end</span>
+        audio = resample(y,Fs,fs);
+        do(hObject, eventdata, handles,audio,Fs,3);
+        set(handles.sample,<span class="string">'string'</span>,strcat(<span class="string">'&#37319;&#26679;&#29575;&#65306;'</span>,num2str(Fs)));
+    <span class="keyword">end</span>
+<span class="comment">% hObject    handle to slider2 (see GCBO)</span>
+<span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+<span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+
+<span class="comment">% Hints: get(hObject,'Value') returns position of slider</span>
+<span class="comment">%        get(hObject,'Min') and get(hObject,'Max') to determine range of slider</span>
+
+
+<span class="comment">% --- Executes during object creation, after setting all properties.</span>
+<span class="keyword">function</span> slider2_CreateFcn(hObject, eventdata, handles)
+<span class="comment">% hObject    handle to slider2 (see GCBO)</span>
+<span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+<span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+
+<span class="comment">% Hint: slider controls usually have a light gray background.</span>
+<span class="keyword">if</span> isequal(get(hObject,<span class="string">'BackgroundColor'</span>), get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>))
+    set(hObject,<span class="string">'BackgroundColor'</span>,[.9 .9 .9]);
+<span class="keyword">end</span>
+
+
+<span class="comment">% --- Executes on button press in jiangzhao1.</span>
+<span class="keyword">function</span> jiangzhao1_Callback(hObject, eventdata, handles)
+    <span class="keyword">global</span> path
+    set(handles.jiangzaoba,<span class="string">'string'</span>,<span class="string">'&#38477;&#22122;&#29366;&#24577;&#65306;&#24320;&#22987;'</span>);
+    <span class="keyword">global</span> audio Fs
+    <span class="keyword">if</span> ~isempty(path)
+        [audio ,Fs]=jiangzao(path,handles);
+    <span class="keyword">end</span>
+    set(handles.jiangzaoba,<span class="string">'string'</span>,<span class="string">'&#38477;&#22122;&#29366;&#24577;&#65306;&#32467;&#26463;'</span>);
+
+<span class="comment">% hObject    handle to jiangzhao1 (see GCBO)</span>
+<span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+<span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+
+
+<span class="comment">% &#36825;&#20010;&#26159;&#30011;&#35843;&#24133;&#27874;&#30340;&#20989;&#25968;</span>
+<span class="keyword">function</span> dov(hObject, eventdata, handles,audio,Fs,number)
+    <span class="keyword">if</span> number==1
+        t=(0:length(audio)-1)/Fs;
+        axes(handles.axes5);
+        plot(t,audio);
+        xlabel(<span class="string">'T/s'</span>);
+        ylabel(<span class="string">'&#24133;&#24230;'</span>);
+        t=title(<span class="string">'&#26102;&#22495;&#22270;'</span>);
+        t.FontSize=14;
+    <span class="keyword">elseif</span> number==2
+        f=(0:length(audio)-1)/length(audio)*Fs;
+        axes(handles.axes6);
+        y_f=abs(fft(audio));
+        y_f=y_f/max(y_f);
+        plot(log(f(find(f&lt;max(f)/2))),y_f(find(f&lt;max(f)/2)));
+        xlabel(<span class="string">'&#39057;&#29575;/Hz'</span>);
+        ylabel(<span class="string">'&#24133;&#24230;'</span>);
+        t=title(<span class="string">'&#35843;&#24133;&#20449;&#21495;&#39057;&#22495;&#22270;'</span>);
+        t.FontSize=14;
+    <span class="keyword">else</span>
+        f=(0:length(audio)-1)/length(audio)*Fs;
+        axes(handles.axes7);
+        y_f=abs(fft(audio));
+        y_f=y_f/max(y_f);
+        plot(log(f(find(f&lt;max(f)/2))),y_f(find(f&lt;max(f)/2)));
+        xlabel(<span class="string">'&#39057;&#29575;/Hz'</span>);
+        ylabel(<span class="string">'&#24133;&#24230;'</span>);
+        t=title(<span class="string">'&#35299;&#35843;&#20449;&#21495;&#39057;&#22495;&#22270;'</span>);
+        t.FontSize=14;
+    <span class="keyword">end</span>
+
+
+<span class="keyword">function</span> do(hObject, eventdata, handles,audio,Fs,number)
+    <span class="keyword">if</span> number==1
+        t=(0:length(audio)-1)/Fs;
+        axes(handles.axes5);
+        plot(t,audio);
+        xlabel(<span class="string">'T/s'</span>);
+        ylabel(<span class="string">'&#24133;&#24230;'</span>);
+        t=title(<span class="string">'&#26102;&#22495;&#22270;'</span>);
+        t.FontSize=14;
+    <span class="keyword">elseif</span> number==2
+        f=(0:length(audio)-1)/length(audio)*Fs;
+        axes(handles.axes6);
+        y_f=abs(fft(audio));
+        y_f=y_f/max(y_f);
+        plot(f(find(f&lt;4000)),y_f(find(f&lt;4000)));
+        xlabel(<span class="string">'&#39057;&#29575;/Hz'</span>);
+        ylabel(<span class="string">'&#24133;&#24230;'</span>);
+        t=title(<span class="string">'&#21407;&#20449;&#21495;&#39057;&#22495;&#22270;'</span>);
+        t.FontSize=14;
+    <span class="keyword">else</span>
+        f=(0:length(audio)-1)/length(audio)*Fs;
+        axes(handles.axes7);
+        y_f=abs(fft(audio));
+        y_f=y_f/max(y_f);
+        plot(f(find(f&lt;4000)),y_f(find(f&lt;4000)));
+        xlabel(<span class="string">'&#39057;&#29575;/Hz'</span>);
+        ylabel(<span class="string">'&#24133;&#24230;'</span>);
+        t=title(<span class="string">'&#38477;&#37319;&#26679;&#21518;&#39057;&#22495;&#22270;'</span>);
+        t.FontSize=14;
+    <span class="keyword">end</span>
+
+
+<span class="comment">% --- Executes on button press in yupub.</span>
+<span class="keyword">function</span> yupub_Callback(hObject, eventdata, handles)
+    <span class="keyword">global</span> flagy
+    <span class="keyword">if</span> flagy==0
+        flagy=1;
+    <span class="keyword">else</span>
+        flagy=0;
+    <span class="keyword">end</span>
+
+<span class="comment">% hObject    handle to yupub (see GCBO)</span>
+<span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+<span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+
+<span class="comment">% Hint: get(hObject,'Value') returns toggle state of yupub</span>
+
+
+<span class="comment">% --- Executes on button press in tiaozhi.</span>
+<span class="keyword">function</span> tiaozhi_Callback(hObject, eventdata, handles)
+    set(handles.zhuantai,<span class="string">'string'</span>,<span class="string">'&#29366;&#24577;&#65306;&#35843;&#21046;&#24320;&#22987;'</span>);
+    [t,b]=tiaozhi();
+    <span class="keyword">global</span> AM_signal AM_Fs
+    AM_signal=t;
+    AM_Fs=b;
+    disp(AM_Fs);
+    set(handles.zhuantai,<span class="string">'string'</span>,<span class="string">'&#29366;&#24577;&#65306;&#35843;&#21046;&#32467;&#26463;'</span>);
+    <span class="comment">% &#32472;&#21046;&#35843;&#21046;&#20043;&#21518;&#30340;&#26102;&#22495;&#22270;</span>
+    dov(hObject, eventdata, handles,AM_signal,AM_Fs,1);
+
+    <span class="comment">% &#32472;&#21046;&#35843;&#21046;&#20043;&#21518;&#30340;&#39057;&#29575;&#22270;</span>
+    dov(hObject, eventdata, handles,AM_signal,AM_Fs,2);
+
+<span class="comment">% hObject    handle to tiaozhi (see GCBO)</span>
+<span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+<span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+
+
+<span class="comment">% --- Executes on slider movement.</span>
+<span class="keyword">function</span> slider3_Callback(hObject, eventdata, handles)
+    clear <span class="string">sound</span>
+    <span class="keyword">global</span> AM_signal AM_Fs
+    disp(AM_Fs);
+    disp(size(AM_signal));
+    <span class="comment">% &#35843;&#35299;&#35843;&#39057;&#29575;</span>
+    <span class="keyword">if</span> ~ AM_Fs==0
+        fc = round(get(handles.slider3,<span class="string">'value'</span>)*200000);
+        set(handles.text12,<span class="string">'string'</span>,strcat(strcat(<span class="string">'&#24403;&#21069;&#39057;&#29575;&#65306;'</span>,num2str(fc)),<span class="string">'Hz'</span>));
+        t=(0:length(AM_signal)-1)/AM_Fs;
+        zaibo=cos(2*pi*fc*t);
+        <span class="comment">% &#35299;&#35843;&#20449;&#21495;</span>
+        st =zeros(length(AM_signal),1);
+        <span class="keyword">for</span> b =1:length(AM_signal)
+            st(b)=AM_signal(b)*zaibo(b);
+        <span class="keyword">end</span>
+
+        dov(hObject, eventdata, handles,st,AM_Fs,3);
+
+        <span class="comment">% &#20302;&#36890;&#28388;&#27874;&#22120;</span>
+        fh = 10000;
+        fs=AM_Fs;
+        <span class="comment">% wp &#35774;&#32622;&#25130;&#27490;&#39057;&#29575;&#65288;&#24102;&#36890;&#25110;&#32773;&#24102;&#38459;&#65289;</span>
+        wp=fh/(fs/2);
+        N=128;
+        <span class="comment">% b=fir1(n,Wn,Window ) n&#28388;&#27874;&#38454;&#25968;&#65292;Wn&#25130;&#27490;&#39057;&#29575;&#65292;0&#8804;Wn&#8804;1&#65292;Wn=1&#23545;&#24212;&#20110;&#37319;&#26679;&#39057;&#29575;&#30340;&#19968;&#21322;&#12290;</span>
+        <span class="comment">% &#24403;&#35774;&#35745;&#24102;&#36890;&#21644;&#24102;&#38459;&#28388;&#27874;&#22120;&#26102;&#65292; Wn=[W1 W2],W1&#8804;&#969;&#8804;W2&#12290;</span>
+        <span class="comment">% Window &#8212; &#31383;&#20989;&#25968;&#12290;&#31383;&#20989;&#25968;&#30340;&#38271;&#24230;&#24212;&#31561;&#20110;FIR&#28388;&#27874;&#22120;&#31995;&#25968;&#20010;&#25968;&#65292;&#21363;&#38454;&#25968; n+1&#12290;</span>
+        <span class="comment">% b&#36820;&#22238;&#28388;&#27874;&#22120;&#31995;&#25968;</span>
+        b=fir1(N,wp,<span class="string">'low'</span>);
+        signa4 = filtfilt(b,1,st);
+        signa41=resample(signa4,20000,fs);
+        <span class="comment">% plot(,abs(fft(signa4)))</span>
+        sound(signa41,20000);
+    <span class="keyword">end</span>
+
+
+
+<span class="comment">% hObject    handle to slider3 (see GCBO)</span>
+<span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+<span class="comment">% handles    structure with handles and user data (see GUIDATA)</span>
+
+<span class="comment">% Hints: get(hObject,'Value') returns position of slider</span>
+<span class="comment">%        get(hObject,'Min') and get(hObject,'Max') to determine range of slider</span>
+
+
+<span class="comment">% --- Executes during object creation, after setting all properties.</span>
+<span class="keyword">function</span> slider3_CreateFcn(hObject, eventdata, handles)
+<span class="comment">% hObject    handle to slider3 (see GCBO)</span>
+<span class="comment">% eventdata  reserved - to be defined in a future version of MATLAB</span>
+<span class="comment">% handles    empty - handles not created until after all CreateFcns called</span>
+
+<span class="comment">% Hint: slider controls usually have a light gray background.</span>
+    <span class="keyword">if</span> isequal(get(hObject,<span class="string">'BackgroundColor'</span>), get(0,<span class="string">'defaultUicontrolBackgroundColor'</span>))
+        set(hObject,<span class="string">'BackgroundColor'</span>,[.9 .9 .9]);
+    <span class="keyword">end</span>
+</pre><img vspace="5" hspace="5" src="Tree_01.png" style="width:1400px;height:808px;" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2016b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+function varargout = Tree(varargin)
+% TREE MATLAB code for Tree.fig
+%      TREE, by itself, creates a new TREE or raises the existing
+%      singleton*.
+%
+%      H = TREE returns the handle to a new TREE or the handle to
+%      the existing singleton*.
+%
+%      TREE('CALLBACK',hObject,eventData,handles,...) calls the local
+%      function named CALLBACK in TREE.M with the given input arguments.
+%
+%      TREE('Property','Value',...) creates a new TREE or raises the
+%      existing singleton*.  Starting from the left, property value pairs are
+%      applied to the GUI before Tree_OpeningFcn gets called.  An
+%      unrecognized property name or invalid value makes property application
+%      stop.  All inputs are passed to Tree_OpeningFcn via varargin.
+%
+%      *See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
+%      instance to run (singleton)".
+%
+% See also: GUIDE, GUIDATA, GUIHANDLES
+
+% Edit the above text to modify the response to help Tree
+
+% Last Modified by GUIDE v2.5 01-Jun-2022 15:35:42
+
+% Begin initialization code - DO NOT EDIT
+gui_Singleton = 1;
+gui_State = struct('gui_Name',       mfilename, ...
+                   'gui_Singleton',  gui_Singleton, ...
+                   'gui_OpeningFcn', @Tree_OpeningFcn, ...
+                   'gui_OutputFcn',  @Tree_OutputFcn, ...
+                   'gui_LayoutFcn',  [] , ...
+                   'gui_Callback',   []);
+if nargin && ischar(varargin{1})
+    gui_State.gui_Callback = str2func(varargin{1});
+end
+
+if nargout
+    [varargout{1:nargout}] = gui_mainfcn(gui_State, varargin{:});
+else
+    gui_mainfcn(gui_State, varargin{:});
+end
+global flag flag1 flagy 
+
+flag =0;
+flag1 =0;
+flagy =0;
+
+
+
+% global audio Fs path
+
+% End initialization code - DO NOT EDIT
+
+
+% REPLACE_WITH_DASH_DASH- Executes just before Tree is made visible.
+function Tree_OpeningFcn(hObject, eventdata, handles, varargin)
+% This function has no output args, see OutputFcn.
+% hObject    handle to figure
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+% varargin   command line arguments to Tree (see VARARGIN)
+
+% Choose default command line output for Tree
+handles.output = hObject;
+
+% Update handles structure
+guidata(hObject, handles);
+
+global AM_Fs
+AM_Fs=0;
+
+
+% UIWAIT makes Tree wait for user response (see UIRESUME)
+% uiwait(handles.figure1);
+
+
+% REPLACE_WITH_DASH_DASH- Outputs from this function are returned to the command line.
+function varargout = Tree_OutputFcn(hObject, eventdata, handles) 
+% varargout  cell array for returning output args (see VARARGOUT);
+% hObject    handle to figure
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Get default command line output from handles structure
+varargout{1} = handles.output;
+
+
+% REPLACE_WITH_DASH_DASH- Executes on button press in luzhi.
+function luzhi_Callback(hObject, eventdata, handles)
+    global flag
+    flag = ~flag ;
+    if flag==0
+        set(handles.zhuantai,'string','状态：停止');
+    else
+        set(handles.zhuantai,'string','状态：工作');
+    end
+    luyingchuli(hObject, eventdata, handles);
+% hObject    handle to luzhi (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+    
+
+% REPLACE_WITH_DASH_DASH- Executes on button press in jiangzaoba.
+function jiangzao_Callback(hObject, eventdata, handles)
+    [name, path1]= uigetfile('*.wav');
+    global path
+    path=strcat(path1,name);
+
+
+    
+% hObject    handle to jiangzaoba (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% REPLACE_WITH_DASH_DASH- Executes on button press in bianyin.
+function bianyin_Callback(hObject, eventdata, handles)
+% hObject    handle to bianyin (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+function luyingchuli(hObject, eventdata, handles)
+    global flag
+    while flag==1
+        recobj=audiorecorder;
+        recordblocking(recobj,3);
+        myRecording = getaudiodata(recobj);
+        if ~all(myRecording==0) 
+            audio_fft=abs(fft(myRecording));
+            axes(handles.axes5);
+            Fs=8000;
+            time=(0:(length(myRecording)-1))/Fs;
+            plot(time,myRecording);
+            axis([0 3 -1 1]);
+            set(get(gca, 'YLabel'), 'String', '幅度');
+            t=title('时域波形');
+            t.FontSize=14;
+            [desicion,daopu,frequency]=VoiceProcess(myRecording,Fs,hObject,handles);
+            set(handles.xinbie,'string',strcat('性别：',desicion));
+            set(handles.sample,'string',strcat('采样率：',num2str(Fs)));
+            set(handles.jipin,'string',strcat('基频估计：',(num2str(frequency)),'Hz'));
+            axes(handles.axes6);
+            disp(size(audio_fft));
+            % global flagy
+            % if flagy==0
+            f=(0:(length(myRecording)-1))*Fs/length(myRecording);
+            plot(f(1:fix(length(myRecording)/2)),audio_fft(1:fix(length(myRecording)/2)));
+
+            t=title('频域对数功率谱');
+            t.FontSize=14;
+            set(get(gca, 'YLabel'), 'String', '功率/dB');
+            set(get(gca, 'XLabel'), 'String', '频率/Hz');
+            % else
+            % figure(1);
+            % subplot(3,1,2);
+            % spectrogram(myRecording,256,128,256,8000,'yaxis');
+            % xlabel('时间(s)')
+            % ylabel('频率(KHz)')
+            % title('语谱图');
+            % end
+            axes(handles.axes7);
+            % disp(size(daopu(1:fix(size(daopu,1)/2),:)));
+            plot(daopu(1:fix(size(daopu,1)/2),:));
+            t=title('倒谱');
+            t.FontSize=14;
+            set(get(gca, 'YLabel'), 'String', '功率');
+            set(get(gca, 'XLabel'), 'String', 'ms');
+        end
+    end
+    
+    
+
+
+% REPLACE_WITH_DASH_DASH- Executes on button press in playjiang.
+function playjiang_Callback(hObject, eventdata, handles)
+    global audio Fs
+    if ~isempty(audio) & Fs ~=0
+        disp('yes');
+        sound(audio,Fs);
+    end
+% hObject    handle to playjiang (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% REPLACE_WITH_DASH_DASH- Executes on button press in pushbutton10.
+
+% hObject    handle to pushbutton11 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% REPLACE_WITH_DASH_DASH- Executes on slider movement.
+function slider2_Callback(hObject, eventdata, handles)
+    global path Fs audio
+    disp(get(handles.slider2,'value'));
+    if ~isempty(path)
+        [y,fs]=audioread(path);
+        do(hObject, eventdata, handles,y,fs,1);
+        do(hObject, eventdata, handles,y,fs,2);
+        Fs = round(get(handles.slider2,'value')*fs);
+        if Fs<1000
+            Fs=1000
+        end
+        audio = resample(y,Fs,fs);
+        do(hObject, eventdata, handles,audio,Fs,3);
+        set(handles.sample,'string',strcat('采样率：',num2str(Fs)));
+    end
+% hObject    handle to slider2 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'Value') returns position of slider
+%        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
+
+
+% REPLACE_WITH_DASH_DASH- Executes during object creation, after setting all properties.
+function slider2_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to slider2 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: slider controls usually have a light gray background.
+if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor',[.9 .9 .9]);
+end
+
+
+% REPLACE_WITH_DASH_DASH- Executes on button press in jiangzhao1.
+function jiangzhao1_Callback(hObject, eventdata, handles)
+    global path
+    set(handles.jiangzaoba,'string','降噪状态：开始');
+    global audio Fs
+    if ~isempty(path)
+        [audio ,Fs]=jiangzao(path,handles);
+    end
+    set(handles.jiangzaoba,'string','降噪状态：结束');
+  
+% hObject    handle to jiangzhao1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% 这个是画调幅波的函数
+function dov(hObject, eventdata, handles,audio,Fs,number)
+    if number==1
+        t=(0:length(audio)-1)/Fs;
+        axes(handles.axes5);
+        plot(t,audio);
+        xlabel('T/s');
+        ylabel('幅度');
+        t=title('时域图');
+        t.FontSize=14;
+    elseif number==2
+        f=(0:length(audio)-1)/length(audio)*Fs;
+        axes(handles.axes6);
+        y_f=abs(fft(audio));
+        y_f=y_f/max(y_f);
+        plot(log(f(find(f<max(f)/2))),y_f(find(f<max(f)/2)));
+        xlabel('频率/Hz');
+        ylabel('幅度');
+        t=title('调幅信号频域图');
+        t.FontSize=14;
+    else
+        f=(0:length(audio)-1)/length(audio)*Fs;
+        axes(handles.axes7);
+        y_f=abs(fft(audio));
+        y_f=y_f/max(y_f);
+        plot(log(f(find(f<max(f)/2))),y_f(find(f<max(f)/2)));
+        xlabel('频率/Hz');
+        ylabel('幅度');
+        t=title('解调信号频域图');
+        t.FontSize=14;
+    end
+
+
+function do(hObject, eventdata, handles,audio,Fs,number)
+    if number==1
+        t=(0:length(audio)-1)/Fs;
+        axes(handles.axes5);
+        plot(t,audio);
+        xlabel('T/s');
+        ylabel('幅度');
+        t=title('时域图');
+        t.FontSize=14;
+    elseif number==2
+        f=(0:length(audio)-1)/length(audio)*Fs;
+        axes(handles.axes6);
+        y_f=abs(fft(audio));
+        y_f=y_f/max(y_f);
+        plot(f(find(f<4000)),y_f(find(f<4000)));
+        xlabel('频率/Hz');
+        ylabel('幅度');
+        t=title('原信号频域图');
+        t.FontSize=14;
+    else
+        f=(0:length(audio)-1)/length(audio)*Fs;
+        axes(handles.axes7);
+        y_f=abs(fft(audio));
+        y_f=y_f/max(y_f);
+        plot(f(find(f<4000)),y_f(find(f<4000)));
+        xlabel('频率/Hz');
+        ylabel('幅度');
+        t=title('降采样后频域图');
+        t.FontSize=14;
+    end
+
+
+% REPLACE_WITH_DASH_DASH- Executes on button press in yupub.
+function yupub_Callback(hObject, eventdata, handles)
+    global flagy
+    if flagy==0
+        flagy=1;
+    else
+        flagy=0;
+    end
+
+% hObject    handle to yupub (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of yupub
+
+
+% REPLACE_WITH_DASH_DASH- Executes on button press in tiaozhi.
+function tiaozhi_Callback(hObject, eventdata, handles)
+    set(handles.zhuantai,'string','状态：调制开始');
+    [t,b]=tiaozhi();
+    global AM_signal AM_Fs 
+    AM_signal=t;
+    AM_Fs=b;
+    disp(AM_Fs);
+    set(handles.zhuantai,'string','状态：调制结束');
+    % 绘制调制之后的时域图
+    dov(hObject, eventdata, handles,AM_signal,AM_Fs,1);
+
+    % 绘制调制之后的频率图
+    dov(hObject, eventdata, handles,AM_signal,AM_Fs,2);
+
+% hObject    handle to tiaozhi (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% REPLACE_WITH_DASH_DASH- Executes on slider movement.
+function slider3_Callback(hObject, eventdata, handles)
+    clear sound
+    global AM_signal AM_Fs
+    disp(AM_Fs);
+    disp(size(AM_signal));
+    % 调解调频率
+    if ~ AM_Fs==0
+        fc = round(get(handles.slider3,'value')*200000);
+        set(handles.text12,'string',strcat(strcat('当前频率：',num2str(fc)),'Hz'));
+        t=(0:length(AM_signal)-1)/AM_Fs;
+        zaibo=cos(2*pi*fc*t);
+        % 解调信号
+        st =zeros(length(AM_signal),1);
+        for b =1:length(AM_signal)
+            st(b)=AM_signal(b)*zaibo(b);
+        end
+
+        dov(hObject, eventdata, handles,st,AM_Fs,3);
+
+        % 低通滤波器
+        fh = 10000;
+        fs=AM_Fs;
+        % wp 设置截止频率（带通或者带阻） 
+        wp=fh/(fs/2);
+        N=128; 
+        % b=fir1(n,Wn,Window ) n滤波阶数，Wn截止频率，0≤Wn≤1，Wn=1对应于采样频率的一半。
+        % 当设计带通和带阻滤波器时， Wn=[W1 W2],W1≤ω≤W2。
+        % Window — 窗函数。窗函数的长度应等于FIR滤波器系数个数，即阶数 n+1。
+        % b返回滤波器系数
+        b=fir1(N,wp,'low');  
+        signa4 = filtfilt(b,1,st);
+        signa41=resample(signa4,20000,fs);
+        % plot(,abs(fft(signa4)))
+        sound(signa41,20000);
+    end
+
+
+
+% hObject    handle to slider3 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'Value') returns position of slider
+%        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
+
+
+% REPLACE_WITH_DASH_DASH- Executes during object creation, after setting all properties.
+function slider3_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to slider3 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: slider controls usually have a light gray background.
+    if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+        set(hObject,'BackgroundColor',[.9 .9 .9]);
+    end
+
+##### SOURCE END #####
+--></body></html>

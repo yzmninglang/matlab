@@ -22,7 +22,7 @@ function varargout = Tree(varargin)
 
 % Edit the above text to modify the response to help Tree
 
-% Last Modified by GUIDE v2.5 29-May-2022 21:43:42
+% Last Modified by GUIDE v2.5 01-Jun-2022 15:35:42
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -41,12 +41,15 @@ if nargout
 else
     gui_mainfcn(gui_State, varargin{:});
 end
-global flag flag1 flagy
+global flag flag1 flagy 
+
 flag =0;
 flag1 =0;
 flagy =0;
 
-global audio Fs path
+
+
+% global audio Fs path
 
 % End initialization code - DO NOT EDIT
 
@@ -64,6 +67,10 @@ handles.output = hObject;
 
 % Update handles structure
 guidata(hObject, handles);
+
+global AM_Fs
+AM_Fs=0;
+
 
 % UIWAIT makes Tree wait for user response (see UIRESUME)
 % uiwait(handles.figure1);
@@ -236,6 +243,40 @@ function jiangzhao1_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
+
+% 这个是画调幅波的函数
+function dov(hObject, eventdata, handles,audio,Fs,number)
+    if number==1
+        t=(0:length(audio)-1)/Fs;
+        axes(handles.axes5);
+        plot(t,audio);
+        xlabel('T/s');
+        ylabel('幅度');
+        t=title('时域图');
+        t.FontSize=14;
+    elseif number==2
+        f=(0:length(audio)-1)/length(audio)*Fs;
+        axes(handles.axes6);
+        y_f=abs(fft(audio));
+        y_f=y_f/max(y_f);
+        plot(f(find(f<Fs/2)),abs(log(y_f(find(f<Fs/2)))));
+        xlabel('频率对数/Hz');
+        ylabel('幅度');
+        t=title('调幅信号频域图');
+        t.FontSize=14;
+    else
+        f=(0:length(audio)-1)/length(audio)*Fs;
+        axes(handles.axes7);
+        y_f=abs(fft(audio));
+        y_f=y_f/max(y_f);
+        plot(f(find(f<Fs/2)),y_f(find(f<Fs/2)));
+        xlabel('频率/Hz');
+        ylabel('幅度');
+        t=title('通过低通滤波信号频域图');
+        t.FontSize=14;
+    end
+
+
 function do(hObject, eventdata, handles,audio,Fs,number)
     if number==1
         t=(0:length(audio)-1)/Fs;
@@ -282,3 +323,103 @@ function yupub_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 % Hint: get(hObject,'Value') returns toggle state of yupub
+
+
+% --- Executes on button press in tiaozhi.
+function tiaozhi_Callback(hObject, eventdata, handles)
+    set(handles.zhuantai,'string','状态：调制开始');
+    [t,b]=tiaozhi();
+    global AM_signal AM_Fs 
+    AM_signal=t;
+    AM_Fs=b;
+    disp(AM_Fs);
+    set(handles.zhuantai,'string','状态：调制结束');
+    % 绘制调制之后的时域图
+    dov(hObject, eventdata, handles,AM_signal,AM_Fs,1);
+
+    % 绘制调制之后的频率图
+    dov(hObject, eventdata, handles,AM_signal,AM_Fs,2);
+
+% hObject    handle to tiaozhi (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --- Executes on slider movement.
+function slider3_Callback(hObject, eventdata, handles)
+    clear sound
+    global AM_signal AM_Fs
+    disp(AM_Fs);
+    disp(size(AM_signal));
+    % 调解调频率
+    if ~ AM_Fs==0
+        fc = round(get(handles.slider3,'value')*50000);
+        set(handles.text12,'string',strcat(strcat('当前频率：',num2str(fc)),'Hz'));
+        t=(0:length(AM_signal)-1)/AM_Fs;
+        zaibo=cos(2*pi*fc*t);
+
+
+        % 先滤波
+        fs =AM_Fs;
+        fl = fc;
+        fh = fc+10000;   
+        % wp 设置截止频率（带通或者带阻） 
+        wp=[fl/(fs/2) fh/(fs/2)];
+        N=128; 
+        % b=fir1(n,Wn,Window ) n滤波阶数，Wn截止频率，0≤Wn≤1，Wn=1对应于采样频率的一半。
+        % 当设计带通和带阻滤波器时， Wn=[W1 W2],W1≤ω≤W2。
+        % Window — 窗函数。窗函数的长度应等于FIR滤波器系数个数，即阶数 n+1。
+        % b返回滤波器系数
+        b=fir1(N,wp,blackman(N+1));  %  blackman(n)产生一个长度为n的布拉克曼窗 
+        % 零相位数字滤波, If you use an all-zero filter (FIR), enter 1 for a.
+        signa2 = filtfilt(b,1,AM_signal); 
+
+
+
+
+        % 解调信号
+        st =zeros(length(signa2),1);
+        for b =1:length(signa2)
+            st(b)=signa2(b)*zaibo(b);
+        end
+        
+        
+
+        % 低通滤波器
+        fh = 8000;
+        fs=AM_Fs;
+        % wp 设置截止频率（带通或者带阻） 
+        wp=fh/(fs/2);
+        N=128; 
+        % b=fir1(n,Wn,Window ) n滤波阶数，Wn截止频率，0≤Wn≤1，Wn=1对应于采样频率的一半。
+        % 当设计带通和带阻滤波器时， Wn=[W1 W2],W1≤ω≤W2。
+        % Window — 窗函数。窗函数的长度应等于FIR滤波器系数个数，即阶数 n+1。
+        % b返回滤波器系数
+        b=fir1(N,wp,'low');  
+        signa4 = filtfilt(b,1,st);
+        signa41=resample(signa4,20000,fs);
+        dov(hObject, eventdata, handles,signa41,20000,3);
+        % plot(,abs(fft(signa4)))
+        sound(signa41,20000);
+    end
+
+
+
+% hObject    handle to slider3 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'Value') returns position of slider
+%        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
+
+
+% --- Executes during object creation, after setting all properties.
+function slider3_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to slider3 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: slider controls usually have a light gray background.
+    if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+        set(hObject,'BackgroundColor',[.9 .9 .9]);
+    end
