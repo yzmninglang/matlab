@@ -54,7 +54,7 @@ y_resample=resample(y3,Fs3,Fs_3);
 % 生成载波
 t=(0:length(y_resample)-1)/Fs3;
 zaibo=cos(2*pi*fc3*t);
-% 第二个调制信号
+% 第三个调制信号
 AM_signal3=zeros(length(y_resample),1);
 for b =1:length(AM_signal3)
     AM_signal3(b)=(y_resample(b)+k)*zaibo(b);

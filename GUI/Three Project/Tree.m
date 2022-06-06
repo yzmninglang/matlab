@@ -257,9 +257,9 @@ function dov(hObject, eventdata, handles,audio,Fs,number)
     elseif number==2
         f=(0:length(audio)-1)/length(audio)*Fs;
         axes(handles.axes6);
-        y_f=abs(fft(audio));
+        y_f=log(abs(fft(audio)));
         y_f=y_f/max(y_f);
-        plot(f(find(f<Fs/2)),abs(log(y_f(find(f<Fs/2)))));
+        plot(f(find(f<Fs/2)),y_f(find(f<Fs/2))/max(y_f));
         xlabel('频率对数/Hz');
         ylabel('幅度');
         t=title('调幅信号频域图');
